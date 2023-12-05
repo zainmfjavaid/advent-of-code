@@ -1,3 +1,5 @@
+# Solution Runtime: 24.65ms
+
 input_path = 'inputs/day_1_input.txt'
 with open(input_path, 'r') as f:
     bad_calibration_values = f.readlines()
