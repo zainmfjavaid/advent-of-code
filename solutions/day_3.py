@@ -1,7 +1,8 @@
-# Part 1 Solution Runtime: 8.84ms
+from collections import defaultdict
 
-with open('inputs/day_3_input.txt', 'r') as file:
-    grid_lines = [line.rstrip('\n') for line in file]
+input_path = 'inputs/day_3_input.txt'
+with open(input_path, 'r') as f:
+    grid_lines = [line.strip('\n') for line in f.readlines()]
 
 def find_adjacent_coords(x_coord, y_coord, grid_width, grid_height):
     adjacent_coords = []
@@ -22,7 +23,10 @@ def find_adjacent_coords(x_coord, y_coord, grid_width, grid_height):
 grid_width = len(grid_lines[0])
 grid_height = len(grid_lines)
 
-total_sum = 0
+total_sum_part1 = 0
+star_positions = defaultdict(list)
+total_sum_part2 = 0
+
 for y in range(grid_height):
     x = 0
     while x < grid_width:
@@ -30,7 +34,7 @@ for y in range(grid_height):
             x += 1
             continue
 
-        adjacent_checks = find_adjacent_coords(x, y, grid_width, grid_height)
+        adjacent_positions = find_adjacent_coords(x, y, grid_width, grid_height)
         number_sequence = grid_lines[y][x]
 
         for i in range(x + 1, grid_width):
@@ -38,12 +42,25 @@ for y in range(grid_height):
                 break
 
             number_sequence += grid_lines[y][i]
-            adjacent_checks.extend(find_adjacent_coords(i, y, grid_width, grid_height))
+            adjacent_positions.extend(find_adjacent_coords(i, y, grid_width, grid_height))
             x += 1
 
-        if any(grid_lines[adj_y][adj_x] != "." and not grid_lines[adj_y][adj_x].isdigit() for adj_x, adj_y in adjacent_checks):
-            total_sum += int(number_sequence)
+        if any(grid_lines[adj_y][adj_x] != "." and not grid_lines[adj_y][adj_x].isdigit() for adj_x, adj_y in adjacent_positions):
+            total_sum_part1 += int(number_sequence)
+
+        for adj_x, adj_y in adjacent_positions:
+            if grid_lines[adj_y][adj_x] == "*":
+                star_positions[(adj_x, adj_y)].append(int(number_sequence))
+                break
 
         x += 1
 
-print(total_sum)
+for numbers in star_positions.values():
+    if len(numbers) > 1:
+        product = 1
+        for number in numbers:
+            product *= number
+        total_sum_part2 += product
+
+print(f"Part 1 total sum: {total_sum_part1}")
+print(f"Part 2 total sum: {total_sum_part2}")
