@@ -1,3 +1,5 @@
+# Solution Runtime: 11.76ms
+
 from collections import defaultdict
 
 input_path = 'inputs/day_3_input.txt'
