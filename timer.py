@@ -1,6 +1,6 @@
 import time
 
-test_file = 'day_3.py'
+test_file = 'day_4.py'
 
 start = time.perf_counter()
 exec(open(f"solutions/{test_file}").read())
